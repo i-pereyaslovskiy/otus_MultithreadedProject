@@ -1,12 +1,7 @@
 ﻿
 using otus_MultithreadedProject;
 
-Console.WriteLine("OS Version: " + Environment.OSVersion);
-Console.WriteLine("Processor Count: " + Environment.ProcessorCount);
-Console.WriteLine(".NET Version: " + Environment.Version);
-Console.WriteLine();
-
-int[] arrSizes = { 100_000, 1_000_000, 10_000_000 };
+int[] arrSizes = { 100_000, 1_000_000, 10_000_000/*, 100_000_000, 1_000_000_000*/ };
 
 
 
