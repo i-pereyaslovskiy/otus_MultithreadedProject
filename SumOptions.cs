@@ -20,21 +20,42 @@ namespace otus_MultithreadedProject
             const int THREARS_ARRAY_SIZE = 3;
             int calculateCollectionSize = (arr.Length / THREARS_ARRAY_SIZE);
 
-            for (int i = 0; i < THREARS_ARRAY_SIZE; i++)
+            #region for
+            // Если добавлять новые потоки в отдельную колекцию через цикл for,то замыкание не отработает и  
+            // поток придется запускать в той же итерации.
+            /*
+             for (int i = 0; i < THREARS_ARRAY_SIZE; i++)
+             {
+                 Thread t;
+
+                 if (i == THREARS_ARRAY_SIZE - 1)
+                     t = new Thread(() => Interlocked.Add(ref sum, arr.Skip(i * calculateCollectionSize).Sum(x => (long)x)));
+                 else
+                     t = new Thread(() => Interlocked.Add(ref sum, arr.Skip(i * calculateCollectionSize).Take(calculateCollectionSize).Sum(x => (long)x)));
+
+                 t.Start();
+                 t.Join();
+             }
+            */
+            #endregion
+
+            // Для работы Замыкания оспользовать foreach
+            List<Thread> threads = new List<Thread>();
+
+            foreach (var i in Enumerable.Range(0, THREARS_ARRAY_SIZE))
             {
                 if (i == THREARS_ARRAY_SIZE - 1)
-                {
-                    var t = new Thread(() => Interlocked.Add(ref sum, arr.Skip(i * calculateCollectionSize).Sum(x => (long)x)));
-                    t.Start();
-                    t.Join();
-                }
+                    threads.Add(new Thread(() => Interlocked.Add(ref sum, arr.Skip(i * calculateCollectionSize).Sum(x => (long)x))));
                 else
-                {
-                    var t = new Thread(() => Interlocked.Add(ref sum, arr.Skip(i * calculateCollectionSize).Take(calculateCollectionSize).Sum(x => (long)x)));
-                    t.Start();
-                    t.Join();
-                }
+                    threads.Add(new Thread(() => Interlocked.Add(ref sum, arr.Skip(i * calculateCollectionSize).Take(calculateCollectionSize).Sum(x => (long)x))));
             }
+
+            foreach (var tread in threads)
+            {
+                tread.Start();
+                tread.Join();
+            }
+
             return sum;
         }
 
