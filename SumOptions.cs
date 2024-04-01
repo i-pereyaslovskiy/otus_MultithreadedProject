@@ -13,7 +13,6 @@ namespace otus_MultithreadedProject
         {
             return arr.Sum(x => (long)x);
         }
-
         public static long ThreadSum(int[] arr)
         {
             long sum = 0;
@@ -21,7 +20,7 @@ namespace otus_MultithreadedProject
             int calculateCollectionSize = (arr.Length / THREARS_ARRAY_SIZE);
 
             #region for
-            // Если добавлять новые потоки в отдельную колекцию через цикл for,то замыкание не отработает и  
+            // Если добавлять новые потоки в отдельную коллекцию через цикл for,то замыкание не отработает и  
             // поток придется запускать в той же итерации.
             /*
              for (int i = 0; i < THREARS_ARRAY_SIZE; i++)
@@ -39,7 +38,7 @@ namespace otus_MultithreadedProject
             */
             #endregion
 
-            // Для работы Замыкания оспользовать foreach
+            // Для работы Замыкания использовать foreach
             List<Thread> threads = new List<Thread>();
 
             foreach (var i in Enumerable.Range(0, THREARS_ARRAY_SIZE))
@@ -58,13 +57,10 @@ namespace otus_MultithreadedProject
 
             return sum;
         }
-
         public static long ParallelLINQSum(int[] arr)
         {
             return arr.AsParallel().Sum(x => (long)x);
         }
-
-
         public static string ExecutionTimeCheck(Action method)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -75,6 +71,5 @@ namespace otus_MultithreadedProject
 
             return $"Execution time: {stopwatch.ElapsedMilliseconds} ms.";
         }
-
     }
 }
